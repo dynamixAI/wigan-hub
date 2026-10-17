@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% from "macros.html" import row %}
+{% block body %}
+<section class="hero">
+  <div class="wrap">
+    <p class="kicker">Free to read. No sign-up. No subscription.</p>
+    <h1>Every food hygiene rating in Wigan borough, in one place.</h1>
+    <p class="lead">Takeaways, restaurants, cafés, pubs and school kitchens. Updated every morning from official Food Standards Agency inspections.</p>
+    <form class="search" role="search" onsubmit="return false">
+      <div class="field">
+        <label for="q-name">Place name</label>
+        <input id="q-name" type="search" autocomplete="off" placeholder="e.g. chippy, pizza, Costa">
+      </div>
+      <div class="field">
+        <label for="q-where">Where</label>
+        <input id="q-where" type="search" autocomplete="off" placeholder="Street, town or postcode, e.g. WN7 1AA">
+      </div>
+    </form>
+    <div id="results" class="results" aria-live="polite"></div>
+    <div class="area-chips">
+      <span>Or pick an area:</span>
+      {% for a in areas[:10] if a.name != "Other" %}<a href="area/{{ a.slug }}.html">{{ a.name }}</a>{% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="wrap stats-row">
+    <div><b>{{ "{:,}".format(summary.total) }}</b><span>food businesses listed</span></div>
+    <div><b class="green">{{ summary.five_pct }}%</b><span>of rated places score 5</span></div>
+    <div><b>{{ summary.last_30 }}</b><span>rated in the last 30 days</span></div>
+    <div><b>{{ summary.updated }}</b><span>last updated</span></div>
+  </div>
+</section>
+
+<main class="wrap main">
+  <section id="recent">
+    <h2>Recently rated</h2>
+    <p class="muted">Inspections published in the last two weeks, newest first.</p>
+    <div class="list">
+      {% for p in recent %}{{ row(p, root) }}{% else %}<p class="empty">No new ratings in the last two weeks.</p>{% endfor %}
+    </div>
+  </section>
+
+  <section id="areas">
+    <h2>Browse by area</h2>
+    <div class="area-grid">
+      {% for a in areas %}
+      <a href="area/{{ a.slug }}.html"><b>{{ a.name }}</b><span>{{ a.count }} places · {{ a.five_pct }}% rated 5</span></a>
+      {% endfor %}
+    </div>
+  </section>
+</main>
+{% endblock %}

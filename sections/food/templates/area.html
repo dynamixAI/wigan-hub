@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% from "macros.html" import row %}
+{% block title %}Food hygiene ratings in {{ area.name }} | Wigan Food Ratings{% endblock %}
+{% block description %}All {{ area.count }} food hygiene ratings in {{ area.name }}, Wigan, updated daily from the Food Standards Agency.{% endblock %}
+{% block body %}
+<main class="wrap main">
+  <section>
+  <div class="head">
+    <a class="back" href="../index.html#areas">← All areas</a>
+    <h1 class="page">Food hygiene ratings in {{ area.name }}</h1>
+    <p class="muted">{{ area.count }} places · {{ area.five_pct }}% of rated places score 5</p>
+  </div>
+  <div class="filters" role="group" aria-label="Filter by rating">
+    <button type="button" data-all="1" class="on">All</button>
+    <button type="button" data-min="5" data-max="5">5</button>
+    <button type="button" data-min="4" data-max="4">4</button>
+    <button type="button" data-min="3" data-max="3">3</button>
+    <button type="button" data-min="0" data-max="2">2 or below</button>
+    <button type="button" data-recent="1">Inspected in the past 12 months</button>
+  </div>
+  <p class="muted small">Newest inspections first.</p>
+  <div class="list" id="area-list">
+    {% for p in area["items"] %}<div class="item" data-rating="{{ p.rating }}" data-old="{{ 1 if p.age else 0 }}">{{ row(p, root) }}</div>{% endfor %}
+  </div>
+  </section>
+</main>
+{% endblock %}

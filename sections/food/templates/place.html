@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% from "macros.html" import badge, row %}
+{% block title %}{{ place.name }}, {{ place.area }}: food hygiene rating {{ place.rating }} | Wigan Food Ratings{% endblock %}
+{% block description %}{{ place.name }} in {{ place.area }} has a food hygiene rating of {{ place.rating }} ({{ place.label }}){% if place.nice_date %}, inspected {{ place.nice_date }}{% endif %}.{% endblock %}
+{% block head %}{% if place.lat %}<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">{% endif %}{% endblock %}
+{% block body %}
+<main class="wrap main narrow">
+  <div class="head">
+    <a class="back" href="../area/{{ place.area_slug }}.html">← {{ place.area }}</a>
+    <h1 class="page">{{ place.name }}</h1>
+    <p class="muted">{{ place.type }} · {{ place.address }}{% if place.postcode %}, {{ place.postcode }}{% endif %}</p>
+  </div>
+
+  <section class="score-card r{{ place.rating if place.rating.isdigit() else 'x' }}">
+    {{ badge(place.rating, "big") }}
+    <div>
+      <b>{{ place.label }}</b>
+      {% if place.nice_date %}<span>Inspected {{ place.nice_date }}</span>{% endif %}
+      {% if place.badge and place.badge.tone != "plain" %}<span>{{ place.badge.text }} at the last inspection</span>{% endif %}
+    </div>
+  </section>
+
+  {% if place.age %}
+  <p class="note">This rating is from {{ place.nice_date }}. It is still the current official rating: places the council sees as lower risk are inspected less often, sometimes every two to three years.</p>
+  {% endif %}
+
+  {% if place.lat %}
+  <section>
+    <h2>Where it is</h2>
+    <div id="map" class="map" data-lat="{{ place.lat }}" data-lng="{{ place.lng }}" data-name="{{ place.name }}" role="img" aria-label="Map showing {{ place.name }}"></div>
+    <p class="small"><a href="https://www.google.com/maps/search/?api=1&amp;query={{ place.lat }},{{ place.lng }}">Open in Google Maps</a></p>
+  </section>
+  {% endif %}
+
+  {% if place.parts %}
+  <section class="card">
+    <h2>What the inspector found</h2>
+    {% for part in place.parts %}
+    <div class="part">
+      <div class="part-top"><span>{{ part.name }}</span><b>{{ part.text }}</b></div>
+      <div class="bar"><div style="width: {{ part.pct }}%"></div></div>
+    </div>
+    {% endfor %}
+    <p class="muted small">The council's food safety officer scores these three areas, and together they make the overall rating.</p>
+  </section>
+  {% endif %}
+
+  {% if nearby %}
+  <section>
+    <h2>Similar places in {{ place.area }}</h2>
+    <div class="list">{% for p in nearby %}{{ row(p, root) }}{% endfor %}</div>
+  </section>
+  {% endif %}
+
+  <section class="card soft">
+    <h2>Is this your business?</h2>
+    <p>Claiming pages, menu links and website badges are coming soon.</p>
+  </section>
+
+  <p class="muted small">Rating from the Food Standards Agency. <a href="https://ratings.food.gov.uk/business/{{ place.id }}">See it on the FSA site</a>.</p>
+</main>
+{% endblock %}
+{% block scripts %}{% if place.lat %}<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script src="../static/map.js"></script>{% endif %}{% endblock %}
