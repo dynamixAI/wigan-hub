@@ -66,7 +66,9 @@ def prepare(records, log, today=None):
     today = today or date.today()
     events = {(e["id"], e["date"]): e for e in log}
     for r in records:
-        r["age"] = age_note(r["date"], today)
+        if r["date"] < "1950":
+            r["date"] = ""
+        r["age"] = age_note(r["date"], today) if r["rating"].isdigit() else None
         r["slug"] = f"{r['id']}-{slug(r['name'])}"
         r["area_slug"] = slug(r["area"])
         r["label"] = label(r["rating"])

@@ -55,3 +55,8 @@ def test_old_inspections_are_flagged_and_sorted_last():
     assert build.age_note("2024-03-12", today) == "Over 2 years ago"
     records = build.prepare([rec(1, "5", "2024-03-12"), rec(2, "4", "2026-10-01"), rec(3, "Exempt", "")], [], today)
     assert [r["id"] for r in build.areas(records)[0]["items"]] == [2, 1, 3]
+
+
+def test_old_placeholder_dates_are_cleaned():
+    records = build.prepare([rec(1, "AwaitingInspection", "1901-01-01")], [], date(2026, 10, 17))
+    assert records[0]["date"] == "" and records[0]["nice_date"] == "" and records[0]["age"] is None

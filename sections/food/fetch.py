@@ -90,6 +90,10 @@ def to_record(e):
         lat, lng = float(geo.get("latitude")), float(geo.get("longitude"))
     except (TypeError, ValueError):
         lat = lng = None
+    rated_on = (e.get("RatingDate") or "")[:10]
+    # the FSA uses 1 January 1901 as a blank date for places not yet inspected
+    if rated_on < "1950":
+        rated_on = ""
     return {
         "id": e["FHRSID"],
         "name": (e.get("BusinessName") or "").strip(),
@@ -98,7 +102,7 @@ def to_record(e):
         "postcode": postcode,
         "area": area_for(address, postcode),
         "rating": str(e.get("RatingValue") or ""),
-        "date": (e.get("RatingDate") or "")[:10],
+        "date": rated_on,
         "scores": {
             "hygiene": scores.get("Hygiene"),
             "structural": scores.get("Structural"),

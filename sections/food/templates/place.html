@@ -22,6 +22,10 @@
 
   {% if place.age %}
   <p class="note">This rating is from {{ place.nice_date }}. It is still the current official rating: places the council sees as lower risk are inspected less often, sometimes every two to three years.</p>
+  {% elif place.rating == "AwaitingInspection" %}
+  <p class="note">This business is registered with the council but has not had its first hygiene inspection yet, so it has no rating. New businesses often wait a few months.</p>
+  {% elif place.rating == "Exempt" %}
+  <p class="note">This business is exempt from the rating scheme, usually because it is low risk, such as a shop selling only wrapped food. It is still inspected and must meet food law.</p>
   {% endif %}
 
   {% if place.lat %}

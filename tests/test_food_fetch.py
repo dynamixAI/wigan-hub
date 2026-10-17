@@ -51,3 +51,8 @@ def test_authority_lookup(monkeypatch):
     monkeypatch.setattr(fetch, "get", lambda path, params=None: {"authorities": [
         {"Name": "Bolton", "LocalAuthorityId": 1}, {"Name": "Wigan", "LocalAuthorityId": 2}]})
     assert fetch.authority_id() == 2
+
+
+def test_placeholder_date_is_blank():
+    r = fetch.to_record(sample(RatingValue="AwaitingInspection", RatingDate="1901-01-01T00:00:00"))
+    assert r["date"] == ""
