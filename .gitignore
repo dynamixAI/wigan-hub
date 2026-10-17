@@ -221,3 +221,6 @@ __marimo__/
 
 # local build output
 public/
+
+# our site templates, not mkdocs
+!/site

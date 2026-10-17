@@ -1,0 +1,11 @@
+{% macro badge(rating, size="") -%}
+<span class="rating r{{ rating if rating.isdigit() else 'x' }} {{ size }}" aria-label="Rating {{ rating }}">{{ rating if rating.isdigit() else '–' }}</span>
+{%- endmacro %}
+
+{% macro row(p, root) -%}
+<a class="row" href="{{ root }}place/{{ p.slug }}.html">
+  {{ badge(p.rating) }}
+  <span class="row-main"><span class="row-name">{{ p.name }}</span><span class="row-meta">{{ p.type }} · {{ p.area }}{% if p.postcode %}, {{ p.postcode.split(' ')[0] }}{% endif %}</span></span>
+  <span class="row-side">{% if p.badge %}<span class="chip {{ p.badge.tone }}">{{ p.badge.text }}</span>{% elif p.age %}<span class="chip old">{{ p.age }}</span>{% endif %}{% if p.nice_date %}<span>{{ p.nice_date }}</span>{% endif %}</span>
+</a>
+{%- endmacro %}

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Wigan Food Ratings{% endblock %}</title>
+<meta name="description" content="{% block description %}Every food hygiene rating in Wigan borough, free and updated daily from the Food Standards Agency.{% endblock %}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Public+Sans:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="{{ root }}static/style.css">
+{% block head %}{% endblock %}
+</head>
+<body data-root="{{ root }}">
+<header class="top">
+  <div class="wrap top-row">
+    <a class="brand" href="{{ root }}index.html"><span class="brand-mark">5</span>Wigan Food Ratings</a>
+    <nav aria-label="Main">
+      <a href="{{ root }}index.html#recent">Recently rated</a>
+      <a href="{{ root }}index.html#areas">Areas</a>
+      <a href="{{ root }}about.html">About the data</a>
+    </nav>
+  </div>
+</header>
+{% block body %}{% endblock %}
+<footer class="foot">
+  <div class="wrap foot-row">
+    <p>Ratings data from the <a href="https://ratings.food.gov.uk">Food Standards Agency</a>, reused under the
+    <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/">Open Government Licence</a>.
+    Wigan Food Ratings is independent and is not run by or linked to the FSA or Wigan Council.
+    Always check the inspection date. Updated {{ summary.updated }}.</p>
+  </div>
+</footer>
+<script src="{{ root }}static/search.js"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>
